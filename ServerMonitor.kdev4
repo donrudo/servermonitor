@@ -1,0 +1,4 @@
+[Project]
+Name=ServerMonitor
+Manager=KDevCMakeManager
+VersionControl=kdevgit
