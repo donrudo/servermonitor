@@ -48,6 +48,7 @@ public slots:
 	void increaseLag();
 	void connected();
 	void printState();
+	void printError();
 	
  signals:
 	void isAlive(quint16 delay);

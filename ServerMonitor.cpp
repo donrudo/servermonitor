@@ -28,7 +28,7 @@ void ServerMonitor::showState(QString state)
 
 void ServerMonitor::output(quint16 lag)
 {
-	std::cout << "Servidor contestó en " << lag << " ms" << std::endl;;
+    std::cout << "Servidor contest en " << lag << " ms" << std::endl;;
 }
 
 #include "ServerMonitor.moc"

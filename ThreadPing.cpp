@@ -49,21 +49,20 @@ void ThreadPing::run()
 	server->abort(); // sets the socket to a initial connection
 	if( !server->open(QIODevice::ReadWrite)){
 		qDebug() << "Failed to get access to Network Card";
-		return;
+        return;
 	}
 	
-	timeout->setInterval(1000);
-	
+    timeout->setInterval(1000);
+
 	qRegisterMetaType<QAbstractSocket::SocketError>("QAbstractSocket::SocketError");
 	qRegisterMetaType<QAbstractSocket::SocketState>("QAbstractSocket::SocketState");
 	
 	connect(timeout, SIGNAL(timeout()), this, SLOT(increaseLag()));
 	connect(server, SIGNAL(connected()), this, SLOT(connected()));
 	connect(server, SIGNAL(stateChanged(QAbstractSocket::SocketState)),this, SLOT(printState()));
-	
+	connect(server, SIGNAL(error(QAbstractSocket::SocketError)), this,SLOT(printError()));
 	timeout->start();
 	server->connectToHost(hostname, port);
-	
 }
 
 /**
@@ -81,7 +80,7 @@ void ThreadPing::connected()
 	this->state = "True";
 	
 	
-	qDebug() << "INTERNAL > Servidor contestó en " << lag << " ms";
+	// qDebug() << "INTERNAL > Servidor contest en " << lag << " ms";
 	emit isAlive(lag);
 	
 }
@@ -127,10 +126,13 @@ void ThreadPing::printState()
 		}
 	}
 	
-	qDebug() << "INTERNAL > " << str_currentState;
+//	qDebug() << "INTERNAL > " << str_currentState;
 	emit stateChanged(str_currentState);
 }
 
+void ThreadPing::printError(){
+	qDebug() << server->errorString();
+}
 
 /**
  * Getters
