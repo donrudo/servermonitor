@@ -12,6 +12,7 @@
 
 # Qt-es
 
+*.txt.user
 *.pro.user
 *.pro.user.*
 moc_*.cpp

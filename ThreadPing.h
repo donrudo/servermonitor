@@ -42,13 +42,13 @@ public:
 
   virtual ~ThreadPing();
 
-	virtual void run();
 	
 public slots:
 	void increaseLag();
 	void connected();
 	void printState();
 	void printError();
+	virtual void run();
 	
  signals:
 	void isAlive(quint16 delay);

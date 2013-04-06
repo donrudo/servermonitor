@@ -6,23 +6,49 @@
 
 ServerMonitor::ServerMonitor()
 {
-    QTimer* timer = new QTimer(this);
+		QString filename = "~/.config/ServerMonitor/config.json";
+		this->reader = new ConfigReader(filename);
 		
-//		tp = new ThreadPing("127.0.0.1", 443);
-		tp = new ThreadPing("50.22.61.202", 443);
-		connect( tp,SIGNAL(isAlive(quint16)), SLOT(output(quint16)));
-		connect( tp, SIGNAL(stateChanged(QString)),  SLOT(showState(QString)));
 		
-    timer->start( 10 );
-		tp->run();
+		if(reader->getError() < 0){ 
+			this->init();
+		} else {
+			std::cout << "Error : " << (int) reader->getError();
+		}
+}
+
+ServerMonitor::ServerMonitor ( QStringList args ) : QObject()
+{
+	
+		this->reader = new ConfigReader(args.value(1));
+		
+		if(reader->getError() < 0){ 
+			this->init();
+		} else {
+			
+			std::cout << "Error : " << (int) reader->getError();
+			
+		}
+	
 }
 
 ServerMonitor::~ServerMonitor()
 {}
 
+void ServerMonitor::init()
+{
+	this->config = this->reader->getServerList();
+	
+	QTimer* timer = new QTimer(this);
+	connect( tp,SIGNAL(isAlive(quint16)), SLOT(output(quint16)));
+//	connect( tp, SIGNAL(stateChanged(QString)),  SLOT(showState(QString)));
+	connect( timer, SIGNAL(timeout()), tp, SLOT(run()));
+	timer->start( reader->getInterval() );
+	
+}
+
 void ServerMonitor::showState(QString state)
 {
-//	std::cout << state.toStdString() << std::endl;;
 	std::cout << state.toStdString() << std::endl;;
 }
 
