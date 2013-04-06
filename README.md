@@ -15,5 +15,5 @@ Currently only open a connection to a hardcoded ip and port but, the whole idea 
 The Motivation
 ==============
 
-This project is done vecause I'm currently a sysadmin with a constantly changing set of servers and QT development is fun.
+This project is done because I'm currently a sysadmin with a constantly changing set of servers and QT development is fun.
 
