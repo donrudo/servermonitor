@@ -34,7 +34,7 @@ ConfigReader::ConfigReader(QString FileName):
 	delete configFile;
 }
 
-QList< QVariant > ConfigReader::getServerList()
+QList<QVariant > ConfigReader::getServerList()
 {
 	return this->contents["server"].toList();
 }

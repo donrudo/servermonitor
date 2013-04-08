@@ -6,14 +6,15 @@
 
 ServerMonitor::ServerMonitor()
 {
-		QString filename = "~/.config/ServerMonitor/config.json";
+		const QString home = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
+		QString filename = home + "/.config/ServerMonitor/config.json";
 		this->reader = new ConfigReader(filename);
 		
-		
-		if(reader->getError() < 0){ 
+		if(reader->getError() == 0){ 
 			this->init();
 		} else {
-			std::cout << "Error : " << (int) reader->getError();
+			std::cout << filename.toStdString() << " Error : " << (int) reader->getError() << std::endl;
+			exit(reader->getError());
 		}
 }
 
@@ -25,9 +26,8 @@ ServerMonitor::ServerMonitor ( QStringList args ) : QObject()
 		if(reader->getError() < 0){ 
 			this->init();
 		} else {
-			
-			std::cout << "Error : " << (int) reader->getError();
-			
+			std::cout << "Error : " << (int) reader->getError() << std::endl;
+			exit(reader->getError());
 		}
 	
 }
@@ -35,15 +35,34 @@ ServerMonitor::ServerMonitor ( QStringList args ) : QObject()
 ServerMonitor::~ServerMonitor()
 {}
 
+
+/**
+	* Creates a timer for each host/port found at the config file
+	*/
+	
 void ServerMonitor::init()
 {
-	this->config = this->reader->getServerList();
 	
-	QTimer* timer = new QTimer(this);
-	connect( tp,SIGNAL(isAlive(quint16)), SLOT(output(quint16)));
-//	connect( tp, SIGNAL(stateChanged(QString)),  SLOT(showState(QString)));
-	connect( timer, SIGNAL(timeout()), tp, SLOT(run()));
-	timer->start( reader->getInterval() );
+	this->serverList = this->reader->getServerList();
+	
+	std::cout << serverList.size() << std::endl;
+	QVariant data;
+	QVariant port;
+	foreach(data, serverList){
+		
+		QVariantMap content = data.toMap();
+		QList<QVariant> ports =  content["port"].toList();
+		
+	  foreach (port, ports){
+			QTimer* timer = new QTimer(this);
+			ThreadPing *tping = new ThreadPing( content["host"].toString(), (quint16) port.toInt());
+			connect( timer, SIGNAL(timeout()), tping, SLOT(run()));
+			connect( tping,SIGNAL(isAlive(quint16)), SLOT(output(quint16)));
+			connect( tping, SIGNAL(stateChanged(QString)),  SLOT(showState(QString)));
+			timer->start( reader->getInterval() * 1000);
+		}
+	}
+	
 	
 }
 

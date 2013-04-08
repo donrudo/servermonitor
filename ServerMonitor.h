@@ -3,6 +3,9 @@
 
 #include <QtCore/QObject>
 #include <QVariant>
+#include <QDesktopServices>
+#include <QVariantMap>
+#include <QMap>
 #include <QList>
 #include <QStringList>
 #include "ConfigReader.h"
@@ -23,7 +26,8 @@ private:
 		ThreadPing *tp;
 		ConfigReader *reader;
 		
-		QVariantMap config;
+		QMap<QString,QVariant> config;
+		QList<QVariant> serverList;
 };
 
 #endif // ServerMonitor_H

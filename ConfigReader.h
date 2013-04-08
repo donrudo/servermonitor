@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QFile>
 #include <QVariant>
-#include <QList>
+#include <QMap>
 #include <qjson/parser.h>
 #include <qjson/serializer.h>
 
