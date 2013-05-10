@@ -23,8 +23,8 @@ Instalation
 
 There is no such automated method to install this application but you can compile and use it running:
 
- *$ cmake .
- *$ make
+ * cmake .
+ * make
 
 And then run using ./ServerMonitor
 
