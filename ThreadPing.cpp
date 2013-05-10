@@ -1,3 +1,4 @@
+
 /*
     Copyright (c) 2013, Carlos A. Morales <carlos.morales@playfulplay.com>
     All rights reserved.
@@ -28,12 +29,12 @@
 
 #include "ThreadPing.h"
 
-ThreadPing::ThreadPing ( QString hostname, quint16 port ) : QObject()
+ThreadPing::ThreadPing ( QString hostname, quint16 port ) : QObject(), notify()
 {
 	this->hostname = hostname;
 	this->port = port;
 	this->server = new QTcpSocket(this);
-	
+    
 	this->timeout = new QTimer();
 	this->lag = 0;
 }
@@ -131,7 +132,18 @@ void ThreadPing::printState()
 }
 
 void ThreadPing::printError(){
-	qDebug() << server->errorString();
+    
+    if(this->notify.getLib() > None) {
+        
+        
+        notify.sendNotification(this->getHostname(),server->errorString());
+        
+    } else
+    {
+        
+        qDebug() << server->errorString();
+        
+	}
 }
 
 /**

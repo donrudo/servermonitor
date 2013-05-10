@@ -8,6 +8,7 @@
 #include <QMap>
 #include <QList>
 #include <QStringList>
+#include "Notification.h"
 #include "ConfigReader.h"
 #include "ThreadPing.h"
 

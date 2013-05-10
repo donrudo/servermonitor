@@ -31,6 +31,8 @@
 #include <QObject>
 #include <QTimer>
 #include <QTcpSocket>
+#include <QLibrary>
+#include "Notification.h"
 
 class ThreadPing : public QObject
 {
@@ -55,6 +57,8 @@ public slots:
 	void stateChanged(QString message);
 	
 private:
+    
+    Notification notify;
 	
 	QString hostname,state;
 	quint16 port;
