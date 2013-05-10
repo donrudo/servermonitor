@@ -26,13 +26,11 @@ Notification::Notification() :  notify("libnotify.so")
     this->lib = None;
     
     QSystemTrayIcon notifier(this);
+    this->init =
+        (NotificationInit)      notify.resolve( "notify_init");  
     
     if(this->notify.isLoaded()) {
         
-        this->message =
-            ( Message *)            notify.resolve( "NotifyNotification");
-        this->init =
-            (NotificationInit)      notify.resolve( "notify_init");
         this->dialog=
             (NotificationDialog)    notify.resolve( "notify_notification_new");
         this->category =
@@ -40,7 +38,10 @@ Notification::Notification() :  notify("libnotify.so")
         this->timeout =
             (NotificationTimeout)   notify.resolve( "notify_notification_set_timeout");
         this->send =
-            (NotificationShow)      notify.resolve( "notify_notification_show");        
+            (NotificationShow)      notify.resolve( "notify_notification_show");   
+        this->message =
+            ( Message *)            notify.resolve( "NotifyNotification");  
+ 
         
         this->lib = LibNotify;
         
