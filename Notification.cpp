@@ -72,10 +72,10 @@ void Notification::sendNotification(QString title,QString msg)
     QSystemTrayIcon notifier(this);
     
     if(notifier.supportsMessages()){
-        notifier.showMessage("Pruebala", "Prueba esta!!", QSystemTrayIcon::Information , 1000);
+        notifier.showMessage(title, msg, QSystemTrayIcon::Information , 1000);
         
         
-        this->init("prueba esta");
+        this->init(" ");
         this->message = (Message *) dialog("Notifications are supported", " ", " ");
         this->timeout(message, 3000);
 		this->send(message,NULL);
@@ -83,9 +83,9 @@ void Notification::sendNotification(QString title,QString msg)
    
         if (this->lib == LibNotify){
             
-            this->init("prueba esta");
+            this->init(" ");
             
-            this->message = ( Message *)dialog(title.toStdString().data(), msg.toStdString().data(),"probando");
+            this->message = ( Message *)dialog(title.toStdString().data(), msg.toStdString().data()," ");
             
             this->timeout(message, 3000);
             
