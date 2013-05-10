@@ -38,11 +38,12 @@ Notification::Notification() :  notify("libnotify.so")
     this->send =
         (NotificationShow)  notify.resolve( "notify_notification_show");
     
-    this->lib = LibNotify;/*
+    if(this->notify.isLoaded()) {
+        this->lib = LibNotify;
     } else {
         qDebug() << "load none";
-        lib = None;
-    }*/
+        this->lib = None;
+    }
   //  qDebug() << "ran notification constructor";
 
 }
@@ -66,7 +67,7 @@ void Notification::clickHandler()
 
 void Notification::sendNotification(QString title,QString msg)
 {
-    if (lib == LibNotify){
+    if (this->lib == LibNotify){
 		this->init("prueba esta");
 		
 		this->message = ( Message *)dialog(title.toStdString().data(), msg.toStdString().data(),"probando");
