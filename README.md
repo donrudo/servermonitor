@@ -17,3 +17,18 @@ The Motivation
 
 This project is done because I'm currently a sysadmin with a constantly changing set of servers and QT development is fun.
 
+
+Instalation
+===========
+
+There is no such automated method to install this application but you can compile and use it running:
+
+$ cmake .
+$ make
+
+And then run using ./ServerMonitor
+
+There is a configuration sample which you should rename to config.json instead of config-sample.json; edit it and set valid IP addresses or hostnames.
+
+Enjoy!!
+=======
