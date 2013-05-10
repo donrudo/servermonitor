@@ -24,6 +24,7 @@
 #include <QLibrary>
 #include <QObject>
 #include <QDebug>
+#include <QSystemTrayIcon>
 
 enum FreedesktopNotificationType {
 	None = 0,

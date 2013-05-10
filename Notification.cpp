@@ -44,6 +44,7 @@ Notification::Notification() :  notify("libnotify.so")
         qDebug() << "load none";
         this->lib = None;
     }
+    
   //  qDebug() << "ran notification constructor";
 
 }
@@ -67,17 +68,32 @@ void Notification::clickHandler()
 
 void Notification::sendNotification(QString title,QString msg)
 {
-    if (this->lib == LibNotify){
-		this->init("prueba esta");
-		
-		this->message = ( Message *)dialog(title.toStdString().data(), msg.toStdString().data(),"probando");
-		
-		this->timeout(message, 3000);
-		
+    
+    QSystemTrayIcon notifier(this);
+    
+    if(notifier.supportsMessages()){
+        notifier.showMessage("Pruebala", "Prueba esta!!", QSystemTrayIcon::Information , 1000);
+        
+        
+        this->init("prueba esta");
+        this->message = (Message *) dialog("Notifications are supported", " ", " ");
+        this->timeout(message, 3000);
 		this->send(message,NULL);
-		
-	} 
+    } else {
    
+        if (this->lib == LibNotify){
+            
+            this->init("prueba esta");
+            
+            this->message = ( Message *)dialog(title.toStdString().data(), msg.toStdString().data(),"probando");
+            
+            this->timeout(message, 3000);
+            
+            this->send(message,NULL);
+            
+        } 
+    }
+    
 }
 
 #include "Notification.moc"
