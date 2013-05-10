@@ -23,27 +23,30 @@
 Notification::Notification() :  notify("libnotify.so")
 {
     
+    this->lib = None;
     
-    
-    this->message =
-        ( Message *) notify.resolve("NotifyNotification");
-    this->init =
-        (NotificationInit)  notify.resolve( "notify_init");
-    this->dialog=
-        (NotificationDialog)  notify.resolve("notify_notification_new");
-    this->category =
-        (NotificationCategory)  notify.resolve("notify_notification_set_category");
-    this->timeout =
-        (NotificationTimeout)  notify.resolve("notify_notification_set_timeout");
-    this->send =
-        (NotificationShow)  notify.resolve( "notify_notification_show");
+    QSystemTrayIcon notifier(this);
     
     if(this->notify.isLoaded()) {
+        
+        this->message =
+            ( Message *)            notify.resolve( "NotifyNotification");
+        this->init =
+            (NotificationInit)      notify.resolve( "notify_init");
+        this->dialog=
+            (NotificationDialog)    notify.resolve( "notify_notification_new");
+        this->category =
+            (NotificationCategory)  notify.resolve( "notify_notification_set_category");
+        this->timeout =
+            (NotificationTimeout)   notify.resolve( "notify_notification_set_timeout");
+        this->send =
+            (NotificationShow)      notify.resolve( "notify_notification_show");        
+        
         this->lib = LibNotify;
-    } else {
-        qDebug() << "load none";
-        this->lib = None;
-    }
+        
+    } else if(notifier.supportsMessages()){
+        this->lib = QTShowMessage;
+    } 
     
   //  qDebug() << "ran notification constructor";
 
@@ -69,29 +72,38 @@ void Notification::clickHandler()
 void Notification::sendNotification(QString title,QString msg)
 {
     
-    QSystemTrayIcon notifier(this);
     
-    if(notifier.supportsMessages()){
-        notifier.showMessage(title, msg, QSystemTrayIcon::Information , 1000);
-        
-        
-        this->init(" ");
-        this->message = (Message *) dialog("Notifications are supported", " ", " ");
-        this->timeout(message, 3000);
-		this->send(message,NULL);
-    } else {
-   
-        if (this->lib == LibNotify){
+    switch (this->lib) {
             
+        case LibNotify: {
+        
             this->init(" ");
             
             this->message = ( Message *)dialog(title.toStdString().data(), msg.toStdString().data()," ");
-            
             this->timeout(message, 3000);
-            
             this->send(message,NULL);
+        
+            break;
+        }
+        case KNotification:
+        case QTShowMessage: {
+        
+            QSystemTrayIcon notifier(this);
+            notifier.showMessage(title, msg);
             
-        } 
+            //                this->init(" ");
+            //                this->message = (Message *) dialog("Notifications are supported", " ", " ");
+            //                this->timeout(message, 3000);
+            //                this->send(message,NULL);
+            
+        }
+        case None:
+        default: {
+            
+            qDebug() << title << " " << msg;
+                
+            break;
+        }
     }
     
 }

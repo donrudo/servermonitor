@@ -29,8 +29,8 @@
 enum FreedesktopNotificationType {
 	None = 0,
 	KNotification = 1,
-	LibNotify = 2
-	
+	LibNotify = 2,
+	QTShowMessage = 3
 	//TODO Add some Windows, Mac or Android Notifications lib support.
 };
 
