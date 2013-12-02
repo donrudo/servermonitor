@@ -13,7 +13,7 @@ The whole idea is:
     - Start / Stop button is needed. (TODO)
     - Both last cases should save a basic statistic table. (TODO)
     - If a connection success provide different statistics depending on the lag. (TODO)
-  * QT5 migration will help in the process to cover more platforms (TODO)
+	* QT5 migration will help in the process to cover more platforms (done)
 
 The Motivation
 ==============
