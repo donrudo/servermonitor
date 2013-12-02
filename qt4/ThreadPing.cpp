@@ -27,7 +27,7 @@
 */
 
 
-#include "ThreadPing.h"
+#include "threadping.h"
 
 ThreadPing::ThreadPing ( QString hostname, quint16 port ) : QObject(), notify()
 {
@@ -181,4 +181,4 @@ QString ThreadPing::printBool ( bool value ) const
 	return "True";
 }
 
-#include "ThreadPing.moc"
+#include "threadping.moc"
